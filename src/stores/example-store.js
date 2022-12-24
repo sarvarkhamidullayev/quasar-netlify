@@ -1,15 +1,19 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
+import { api } from "src/boot/axios";
 
-export const useCounterStore = defineStore('counter', {
+export const useCounterStore = defineStore("counter", {
   state: () => ({
-    counter: 0,
+    items: [],
   }),
   getters: {
     doubleCount: (state) => state.counter * 2,
   },
   actions: {
-    increment() {
-      this.counter++;
+    async getItems() {
+      const response = await api.get("/posts");
+      if (response.status === 200) {
+        this.items = response.data;
+      }
     },
   },
 });
